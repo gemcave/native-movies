@@ -44,7 +44,7 @@ const HomeScreen: props => React$Node = props => {
         title={title}
         headerColor={BLUE}
         onPress={() => navigation.openDrawer()}
-        // leftIcon="ios-menu"
+        leftIcon="ios-menu"
         leftColor={WHITE}
       />
       <ScrollView>

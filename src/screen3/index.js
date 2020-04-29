@@ -3,8 +3,9 @@ import 'react-native-gesture-handler';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
+import StargateHomeScreen from '../screen1/HomeScreen';
 import DetailsScreen from './DetailsScreen';
-import { SPIDERMAN_DETAILS, SPIDERMAN_HOME } from '../../routes';
+import { SPIDERMAN_DETAILS, SPIDERMAN_HOME, STARGATE_HOME } from '../../routes';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const App = () => {
     <Stack.Navigator headerMode="none" initialRouteName={SPIDERMAN_HOME}>
       <Stack.Screen name={SPIDERMAN_HOME} component={HomeScreen} />
       <Stack.Screen name={SPIDERMAN_DETAILS} component={DetailsScreen} />
+      <Stack.Screen name={STARGATE_HOME} component={StargateHomeScreen} />
       {/* <Stack.Screen
           name={STARGATE_DETAILS}
           component={DetailsScreen}
