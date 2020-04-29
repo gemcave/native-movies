@@ -8,57 +8,106 @@
 
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import One from './src/screen1';
 import Two from './src/screen2';
 import Three from './src/screen3';
 import { BLUE } from './constants';
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
-function MyTabs() {
+export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        tabBarOptions={{
+      <Drawer.Navigator
+        initialRouteName="Screen1"
+        drawerContentOptions={{
           activeTintColor: BLUE,
-          inactiveTintColor: 'gray',
+          contentContainerStyle: { marginVertical: 65 },
         }}
       >
-        <Tab.Screen
+        <Drawer.Screen
           name="Stargate"
           component={One}
           options={{
-            tabBarIcon: ({ focused, color, size }) => {
-              const iconName = focused ? 'ios-videocam' : 'ios-play';
-              return <Ionicons name={iconName} size={25} color={color} />;
+            drawerLabel: 'Stargate',
+            drawerIcon: ({ focused, color, size }) => {
+              return <MaterialIcons name="grade" />;
             },
           }}
         />
-        <Tab.Screen
+        <Drawer.Screen
           name="Batman"
           component={Two}
           options={{
-            tabBarIcon: ({ focused, color, size }) => {
-              const iconName = focused ? 'ios-videocam' : 'ios-play';
-              return <Ionicons name={iconName} size={25} color={color} />;
+            drawerLabel: 'Batman',
+            drawerIcon: ({ focused, color, size }) => {
+              return <MaterialIcons name="favorite" />;
             },
           }}
         />
-        <Tab.Screen
+        <Drawer.Screen
           name="Spiderman"
           component={Three}
           options={{
-            tabBarIcon: ({ focused, color, size }) => {
-              const iconName = focused ? 'ios-videocam' : 'ios-play';
-              return <Ionicons name={iconName} size={25} color={color} />;
+            drawerLabel: 'Spiderman',
+            drawerIcon: ({ focused, color, size }) => {
+              return <MaterialIcons name="pets" />;
             },
           }}
         />
-      </Tab.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
 
-export default MyTabs;
+// function MyTabs() {
+//   return (
+//     <NavigationContainer>
+//       <Tab.Navigator
+//         tabBarOptions={{
+//           activeTintColor: BLUE,
+//           inactiveTintColor: 'gray',
+//         }}
+//       >
+//         <Tab.Screen
+//           name="Stargate"
+//           component={One}
+//           options={{
+//             tabBarIcon: ({ focused, color, size }) => {
+//               const iconName = focused ? 'ios-videocam' : 'ios-play';
+//               return <Ionicons name={iconName} size={25} color={color} />;
+//             },
+//           }}
+//         />
+//         <Tab.Screen
+//           name="Batman"
+//           component={Two}
+//           options={{
+//             tabBarIcon: ({ focused, color, size }) => {
+//               const iconName = focused ? 'ios-videocam' : 'ios-play';
+//               return <Ionicons name={iconName} size={25} color={color} />;
+//             },
+//           }}
+//         />
+//         <Tab.Screen
+//           name="Spiderman"
+//           component={Three}
+//           options={{
+//             tabBarIcon: ({ focused, color, size }) => {
+//               const iconName = focused ? 'ios-videocam' : 'ios-play';
+//               return <Ionicons name={iconName} size={25} color={color} />;
+//             },
+//           }}
+//         />
+//       </Tab.Navigator>
+//     </NavigationContainer>
+//   );
+// }
+
+// export default MyTabs;
