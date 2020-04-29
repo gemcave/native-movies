@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { w } from '../../../constants';
 
 const styles = StyleSheet.create({
@@ -30,17 +30,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const ImageCard = ({ data }) => {
+const ImageCard = ({ data, onPress }) => {
   const { h1, cover, container, sub } = styles;
   const { image, name } = data;
 
   return (
-    <View style={container}>
-      <View style={sub}>
-        <Image style={cover} source={{ uri: image }} />
+    <TouchableOpacity onPress={onPress}>
+      <View style={container}>
+        <View style={sub}>
+          <Image style={cover} source={{ uri: image.medium }} />
+        </View>
+        <Text style={h1}>{name.toUpperCase()}</Text>
       </View>
-      <Text style={h1}>{name.toUpperCase()}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 // export {ImageCard};
