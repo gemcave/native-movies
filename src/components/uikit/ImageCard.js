@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
   container: {
     width: w / 2.4,
     paddingVertical: 10,
-    paddingVertical: 10,
   },
   sub: {
     shadowColor: '#000',
