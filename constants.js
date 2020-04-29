@@ -6,6 +6,7 @@ export const WHITE = '#fff';
 export const win = Dimensions.get('window');
 export const w = win.width;
 export const h = win.height;
+
 export const responsive = {
   mobile5: w > 315 && w < 341,
   mobile8: w > 342 && w < 375,
