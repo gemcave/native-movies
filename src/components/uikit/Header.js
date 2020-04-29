@@ -1,39 +1,83 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet } from 'react-native';
-
-const Header = ({ title }) => {
-  return (
-    <SafeAreaView style={styles.viewStyle}>
-      <Text style={styles.textStyle}>{title}</Text>
-    </SafeAreaView>
-  );
-};
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { w } from '../../../constants';
 
 const styles = StyleSheet.create({
-  textStyle: {
-    color: '#fff',
-    fontSize: 28,
-    fontFamily: 'AvenirNext-DemiBold',
-    textAlign: 'center',
-    margin: 10,
-    textTransform: 'uppercase',
-  },
   viewStyle: {
-    backgroundColor: '#30d0fe',
-    height: 116,
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    paddingLeft: 22,
-    paddingTop: 71,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     elevation: 2,
     position: 'relative',
+    ...ifIphoneX(
+      {
+        height: 122,
+      },
+      {
+        height: 90,
+      },
+    ),
+  },
+  textStyle: {
+    color: '#fff',
+    fontSize: 28,
+    width: w - 40,
+    fontFamily: 'AvenirNext-DemiBold',
+    ...ifIphoneX(
+      {
+        paddingTop: 75,
+      },
+      {
+        paddingTop: 50,
+      },
+    ),
+  },
+  leftButtonStyle: {
+    ...ifIphoneX(
+      {
+        paddingTop: 75,
+      },
+      {
+        paddingTop: 50,
+      },
+    ),
+    fontSize: 35,
   },
 });
+
+const Header = ({
+  detail,
+  leftIcon,
+  leftColor,
+  headerColor,
+  title,
+  onPress,
+}) => {
+  const { viewStyle, textStyle, leftButtonStyle } = styles;
+  return (
+    <View style={[viewStyle, { backgroundColor: headerColor }]}>
+      {leftIcon && (
+        <TouchableOpacity onPress={onPress}>
+          <Ionicons
+            name={leftIcon}
+            style={[leftButtonStyle, { paddingLeft: detail ? 10 : 25 }]}
+            color={leftColor}
+          />
+        </TouchableOpacity>
+      )}
+      <Text
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        style={[textStyle, { paddingLeft: leftIcon ? 10 : 0 }]}
+      >
+        {title}
+      </Text>
+    </View>
+  );
+};
 
 export default Header;

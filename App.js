@@ -6,54 +6,59 @@
  * @flow strict-local
  */
 
-import React, { useEffect, useState, Fragment } from 'react';
-import { Header, ImageCard } from './src/components/uikit/';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import One from './src/screen1';
+import Two from './src/screen2';
+import Three from './src/screen3';
+import { BLUE } from './constants';
 
-const moviesUrl =
-  'https://gitlab.com/gHashTag/react-native-init-data/-/raw/master/db.json';
+const Tab = createBottomTabNavigator();
 
-const App: () => React$Node = () => {
-  const [title, _] = useState('Star gate');
-  const [movies, setMovies] = useState([]);
-  const { container } = styles;
-
-  useEffect(() => {
-    const fetchMovies = async url => {
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setMovies(data);
-      } catch (e) {
-        throw e;
-      }
-    };
-
-    fetchMovies(moviesUrl);
-  }, []);
-  console.log(movies);
+function MyTabs() {
   return (
-    <View>
-      <Header title={title} />
-      <ScrollView>
-        <View style={container}>
-          {movies.map(movie => (
-            <ImageCard key={movie.id} data={movie} />
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: BLUE,
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <Tab.Screen
+          name="Stargate"
+          component={One}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => {
+              const iconName = focused ? 'ios-videocam' : 'ios-play';
+              return <Ionicons name={iconName} size={25} color={color} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Batman"
+          component={Two}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => {
+              const iconName = focused ? 'ios-videocam' : 'ios-play';
+              return <Ionicons name={iconName} size={25} color={color} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Spiderman"
+          component={Three}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => {
+              const iconName = focused ? 'ios-videocam' : 'ios-play';
+              return <Ionicons name={iconName} size={25} color={color} />;
+            },
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 30,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    flexShrink: 2,
-    justifyContent: 'space-around',
-    marginBottom: 150,
-  },
-});
-export default App;
+export default MyTabs;
