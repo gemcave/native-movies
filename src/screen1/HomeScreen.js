@@ -6,22 +6,42 @@
  * @flow strict-local
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Header, ImageCard, SearchBar } from '../components/uikit/';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { searchChanged, getMovies } from '../actions/';
 import { STARGATE_DETAILS } from '../../routes';
 import { WHITE, BLUE } from '../../constants';
+import { useQuery } from 'react-apollo-hooks';
+import gql from 'graphql-tag';
+
+const GET_SHOWS = gql`
+  query($search: String!) {
+    shows(search: $search)
+      @rest(type: "Person", path: "search/shows?q={args.search}") {
+      show @type(name: "Show") {
+        id
+        name
+        summary
+        image @type(name: "Image") {
+          medium
+          original
+        }
+      }
+    }
+  }
+`;
 
 const moviesUrl = 'http://api.tvmaze.com/search/shows?q=stargate';
 
-const HomeScreen: props => React$Node = props => {
-  const [title, _] = useState('Star gate');
+const HomeScreen: props => React$Node = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
-  const [visibleSearchBar, setVisibleSearchBar] = useState(false);
+  const [value, setValue] = useState('StarGate');
+  const { data, loading } = useQuery(GET_SHOWS, {
+    variables: { search: value },
+  });
+  const [visible, setVisible] = useState(false);
+  // const [visibleSearchBar, setVisibleSearchBar] = useState(false);
   const { container } = styles;
-  const { navigation, movie, data, searchChanged, getMovies } = props;
 
   // useEffect(() => {
   //   const fetchMovies = async url => {
@@ -37,48 +57,42 @@ const HomeScreen: props => React$Node = props => {
   //   fetchMovies(moviesUrl);
   // }, []);
 
-  const _onChangeText = text => {
-    searchChanged(text);
-    getMovies(text);
-  };
+  const onScreen = (screen, show) => () => navigation.navigate(screen, show);
+  const onPress = i => () => setVisible(i);
+  const onSearchChange = text => setValue(text);
 
-  console.log(props);
   return (
     <View>
-      {visibleSearchBar ? (
+      {visible ? (
         <SearchBar
           colorRight={'#fff'}
           iconRight="magnify"
           placeholder="Search"
-          onChangeText={_onChangeText}
-          value={movie}
-          onPressRight={() => setVisibleSearchBar(false)}
-          onBlur={() => setVisibleSearchBar(false)}
+          onChangeText={onSearchChange}
+          onPressRight={onPress(false)}
+          onBlur={onPress(false)}
         />
       ) : (
         <Header
-          title={title}
+          title={value}
           headerColor={BLUE}
           colorRight={'#fff'}
           iconRight="magnify"
-          onPressRight={() => setVisibleSearchBar(true)}
+          onPressRight={onPress(true)}
           // iconLeft="ios-menu"
           leftColor={WHITE}
         />
       )}
       <ScrollView>
         <View style={container}>
-          {data.map(item => (
-            <ImageCard
-              key={item.show.id}
-              data={item.show}
-              onPress={() =>
-                navigation.navigate(STARGATE_DETAILS, {
-                  show: item.show,
-                })
-              }
-            />
-          ))}
+          {!loading &&
+            data.shows.map(item => (
+              <ImageCard
+                key={item.show.id}
+                data={item.show}
+                onPress={onScreen(STARGATE_DETAILS, { movie: item.show })}
+              />
+            ))}
         </View>
       </ScrollView>
     </View>
@@ -96,13 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  return {
-    movie: state.search.movie,
-    data: state.search.data,
-  };
-};
-export default connect(
-  mapStateToProps,
-  { searchChanged, getMovies },
-)(HomeScreen);
+export default HomeScreen;
