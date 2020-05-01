@@ -7,62 +7,71 @@
  */
 
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import { NavigationContainer } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import One from './src/screen1';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import reducers from './src/reducers';
+import Screen from './src/screen1';
 import Two from './src/screen2';
 import Three from './src/screen3';
 import { BLUE } from './constants';
+
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(ReduxThunk)),
+);
 
 // const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Screen1"
-        drawerContentOptions={{
-          activeTintColor: BLUE,
-          contentContainerStyle: { marginVertical: 65 },
-        }}
-      >
-        <Drawer.Screen
-          name="Stargate"
-          component={One}
-          options={{
-            drawerLabel: 'Stargate',
-            drawerIcon: ({ focused, color, size }) => {
-              return <MaterialIcons name="grade" />;
-            },
+    <Provider store={store}>
+      <NavigationContainer>
+        <Drawer.Navigator
+          initialRouteName="Screen1"
+          drawerContentOptions={{
+            activeTintColor: BLUE,
+            contentContainerStyle: { marginVertical: 65 },
           }}
-        />
-        <Drawer.Screen
-          name="Batman"
-          component={Two}
-          options={{
-            drawerLabel: 'Batman',
-            drawerIcon: ({ focused, color, size }) => {
-              return <MaterialIcons name="favorite" />;
-            },
-          }}
-        />
-        <Drawer.Screen
-          name="Spiderman"
-          component={Three}
-          options={{
-            drawerLabel: 'Spiderman',
-            drawerIcon: ({ focused, color, size }) => {
-              return <MaterialIcons name="pets" />;
-            },
-          }}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+        >
+          <Drawer.Screen
+            name="Stargate"
+            component={Screen}
+            options={{
+              drawerLabel: 'Stargate',
+              drawerIcon: ({ focused, color, size }) => {
+                return <MaterialIcons name="grade" />;
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="Batman"
+            component={Two}
+            options={{
+              drawerLabel: 'Batman',
+              drawerIcon: ({ focused, color, size }) => {
+                return <MaterialIcons name="favorite" />;
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="Spiderman"
+            component={Three}
+            options={{
+              drawerLabel: 'Spiderman',
+              drawerIcon: ({ focused, color, size }) => {
+                return <MaterialIcons name="pets" />;
+              },
+            }}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
