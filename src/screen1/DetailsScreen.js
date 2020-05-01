@@ -51,10 +51,10 @@ class DelailsScreen extends Component {
         <Header
           detail
           title={name}
-          onPress={() => navigation.goBack()}
-          leftIcon="ios-arrow-back"
+          onPressLeft={() => navigation.goBack()}
+          iconLeft="ios-arrow-back"
           headerColor={BLUE}
-          leftColor={WHITE}
+          colorLeft={WHITE}
         />
         <ScrollView>
           <View style={sub}>

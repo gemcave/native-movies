@@ -32,12 +32,15 @@ const styles = StyleSheet.create({
 const ImageCard = ({ data, onPress }) => {
   const { h1, cover, container, sub } = styles;
   const { image, name } = data;
-
+  const img =
+    image === null
+      ? 'https://www.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'
+      : image.medium;
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={container}>
         <View style={sub}>
-          <Image style={cover} source={{ uri: image.medium }} />
+          <Image style={cover} source={{ uri: img }} />
         </View>
         <Text style={h1}>{name.toUpperCase()}</Text>
       </View>
