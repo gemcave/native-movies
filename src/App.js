@@ -10,68 +10,41 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
-import reducers from './src/reducers';
-import Screen from './src/screen1';
-import Two from './src/screen2';
-import Three from './src/screen3';
-import { BLUE } from './constants';
-
-const store = createStore(
-  reducers,
-  composeWithDevTools(applyMiddleware(ReduxThunk)),
-);
+import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import Screen from './screen1';
+import { BLUE } from '../constants';
+import client from './apollo';
 
 // const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Drawer.Navigator
-          initialRouteName="Screen1"
-          drawerContentOptions={{
-            activeTintColor: BLUE,
-            contentContainerStyle: { marginVertical: 65 },
-          }}
-        >
-          <Drawer.Screen
-            name="Stargate"
-            component={Screen}
-            options={{
-              drawerLabel: 'Stargate',
-              drawerIcon: ({ focused, color, size }) => {
-                return <MaterialIcons name="grade" />;
-              },
+    <ApolloProvider client={client}>
+      <ApolloHooksProvider client={client}>
+        <NavigationContainer>
+          <Drawer.Navigator
+            initialRouteName="Screen1"
+            drawerContentOptions={{
+              activeTintColor: BLUE,
+              contentContainerStyle: { marginVertical: 65 },
             }}
-          />
-          <Drawer.Screen
-            name="Batman"
-            component={Two}
-            options={{
-              drawerLabel: 'Batman',
-              drawerIcon: ({ focused, color, size }) => {
-                return <MaterialIcons name="favorite" />;
-              },
-            }}
-          />
-          <Drawer.Screen
-            name="Spiderman"
-            component={Three}
-            options={{
-              drawerLabel: 'Spiderman',
-              drawerIcon: ({ focused, color, size }) => {
-                return <MaterialIcons name="pets" />;
-              },
-            }}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </Provider>
+          >
+            <Drawer.Screen
+              name="Stargate"
+              component={Screen}
+              options={{
+                drawerLabel: 'Stargate',
+                drawerIcon: ({ focused, color, size }) => {
+                  return <MaterialIcons name="grade" />;
+                },
+              }}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </ApolloHooksProvider>
+    </ApolloProvider>
   );
 }
 
