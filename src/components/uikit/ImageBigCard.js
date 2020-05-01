@@ -24,10 +24,14 @@ const styles = StyleSheet.create({
 const ImageBigCard = ({ data }) => {
   const { container, sub, cover } = styles;
   const { image } = data;
+  const img =
+    image === null
+      ? 'http://fcrmedia.ie/wp-content/themes/fcr/assets/images/default.jpg'
+      : image.original;
   return (
     <View style={container}>
       <View style={sub}>
-        <Image style={cover} source={{ uri: image.original }} />
+        <Image style={cover} source={{ uri: img }} />
       </View>
     </View>
   );
